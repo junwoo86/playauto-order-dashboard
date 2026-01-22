@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { format, subMonths, subDays } from 'date-fns';
 
@@ -9,10 +9,16 @@ import MappingManager from './components/Mapping/MappingManager';
 import CampaignManager from './components/Campaign/CampaignManager';
 import CoffeeDashboard from './components/Dashboard/CoffeeDashboard';
 import TeamketoDashboard from './components/Teamketo/TeamketoDashboard';
+import Login from './components/Login/Login';
 
 import { getSyncStatus } from './services/api';
 
 function App() {
+  // 인증 상태
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('isAuthenticated') === 'true';
+  });
+
   // 현재 페이지
   const [currentPage, setCurrentPage] = useState('dashboard');
 
@@ -44,12 +50,25 @@ function App() {
     setSelectedShop(shopCd);
   };
 
+  // 로그아웃 핸들러
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userEmail');
+    setIsAuthenticated(false);
+  };
+
+  // 로그인 전 화면
+  if (!isAuthenticated) {
+    return <Login onLogin={setIsAuthenticated} />;
+  }
+
   return (
     <Layout
       currentPage={currentPage}
       onPageChange={setCurrentPage}
       syncStatus={syncStatus}
       onSyncComplete={refetchSyncStatus}
+      onLogout={handleLogout}
     >
       {currentPage === 'dashboard' ? (
         <div className="space-y-6">
