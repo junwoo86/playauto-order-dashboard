@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { format, subMonths, subDays } from 'date-fns';
+import { format, subMonths, startOfMonth, endOfMonth } from 'date-fns';
 
 import Layout from './components/Layout/Layout';
 import Dashboard from './components/Dashboard/Dashboard';
@@ -22,12 +22,11 @@ function App() {
   // 현재 페이지
   const [currentPage, setCurrentPage] = useState('dashboard');
 
-  // 기본 날짜 범위: 그저께 기준 최근 3개월
-  // 오늘/어제 주문은 플레이오토에서 완전히 수집되지 않으므로 2일 전(edate)까지
+  // 기본 날짜 범위: 지난 달
   const today = new Date();
   const [dateRange, setDateRange] = useState({
-    sdate: format(subMonths(subDays(today, 1), 3), 'yyyy-MM-dd'),
-    edate: format(subDays(today, 2), 'yyyy-MM-dd')
+    sdate: format(startOfMonth(subMonths(today, 1)), 'yyyy-MM-dd'),
+    edate: format(endOfMonth(subMonths(today, 1)), 'yyyy-MM-dd')
   });
 
   const [selectedShop, setSelectedShop] = useState(null);

@@ -31,10 +31,10 @@ const DATE_PRESETS = [
 function TeamketoDashboard() {
   const today = new Date();
   const [dateRange, setDateRange] = useState({
-    sdate: format(subMonths(today, 3), 'yyyy-MM-dd'),
-    edate: format(subDays(today, 2), 'yyyy-MM-dd')
+    sdate: format(startOfMonth(subMonths(today, 1)), 'yyyy-MM-dd'),
+    edate: format(endOfMonth(subMonths(today, 1)), 'yyyy-MM-dd')
   });
-  const [activePreset, setActivePreset] = useState('3m');
+  const [activePreset, setActivePreset] = useState('last_month');
   const [viewMode, setViewMode] = useState('daily');
 
   // 기간 프리셋 선택 핸들러

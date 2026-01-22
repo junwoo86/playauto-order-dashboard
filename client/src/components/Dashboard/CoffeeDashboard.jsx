@@ -23,10 +23,10 @@ const DATE_PRESETS = [
 function CoffeeDashboard() {
   const today = new Date();
   const [dateRange, setDateRange] = useState({
-    sdate: format(subMonths(today, 3), 'yyyy-MM-dd'),
-    edate: format(subDays(today, 2), 'yyyy-MM-dd')
+    sdate: format(startOfMonth(subMonths(today, 1)), 'yyyy-MM-dd'),
+    edate: format(endOfMonth(subMonths(today, 1)), 'yyyy-MM-dd')
   });
-  const [activePreset, setActivePreset] = useState('3m'); // 기본값: 최근 3개월
+  const [activePreset, setActivePreset] = useState('last_month'); // 기본값: 지난 달
   const [viewMode, setViewMode] = useState('daily'); // daily, monthly
 
   // 기간 프리셋 선택 핸들러

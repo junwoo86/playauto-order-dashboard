@@ -52,10 +52,25 @@ function DateFilter({ sdate, edate, onChange, selectedShop, onShopChange, exclud
     downloadExcel(params);
   };
 
+  // 현재 선택된 프리셋 확인
+  const isPresetSelected = (preset) => {
+    const { sdate: presetSdate, edate: presetEdate } = preset.getValue();
+    return sdate === presetSdate && edate === presetEdate;
+  };
+
   // 스타일 클래스
-  const presetBtnClass = darkMode
-    ? 'px-3 py-1.5 text-sm bg-blue-500/50 hover:bg-blue-400/50 text-white rounded-lg transition-colors'
-    : 'px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors';
+  const getPresetBtnClass = (preset) => {
+    const isSelected = isPresetSelected(preset);
+    if (darkMode) {
+      return isSelected
+        ? 'px-3 py-1.5 text-sm bg-white text-blue-700 font-semibold rounded-lg transition-colors'
+        : 'px-3 py-1.5 text-sm bg-blue-500/50 hover:bg-blue-400/50 text-white rounded-lg transition-colors';
+    } else {
+      return isSelected
+        ? 'px-2 py-1 text-xs bg-blue-500 text-white font-semibold rounded transition-colors'
+        : 'px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors';
+    }
+  };
 
   const inputClass = darkMode
     ? 'px-3 py-1.5 rounded text-gray-800 text-sm'
@@ -103,7 +118,7 @@ function DateFilter({ sdate, edate, onChange, selectedShop, onShopChange, exclud
             <button
               key={preset.label}
               onClick={() => handlePresetClick(preset)}
-              className={presetBtnClass}
+              className={getPresetBtnClass(preset)}
             >
               {preset.label}
             </button>
