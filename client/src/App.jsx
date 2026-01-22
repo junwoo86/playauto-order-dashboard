@@ -32,8 +32,8 @@ function App() {
 
   const [selectedShop, setSelectedShop] = useState(null);
 
-  // 내부 확인용 제외 필터
-  const [excludeInternal, setExcludeInternal] = useState(false);
+  // 내부 확인용 제외 필터 (기본값: 제외)
+  const [excludeInternal, setExcludeInternal] = useState(true);
 
   // 동기화 상태 조회
   const { data: syncStatus, refetch: refetchSyncStatus } = useQuery({
