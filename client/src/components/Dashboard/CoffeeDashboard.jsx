@@ -520,11 +520,11 @@ function TrendChart({ data, viewMode }) {
   });
 
   const chartData = sortedData.map(item => {
-    // ISO date string을 MM-DD로 변환
+    // 날짜 문자열에서 직접 추출 (시간대 변환 없이)
     let dateLabel = '';
-    if (viewMode === 'daily') {
-      const d = new Date(item.date);
-      dateLabel = `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    if (viewMode === 'daily' && item.date) {
+      const dateParts = String(item.date).split('T')[0].split('-');
+      dateLabel = `${dateParts[1]}-${dateParts[2]}`;
     } else {
       dateLabel = item.month;
     }

@@ -2,13 +2,40 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { startRecentSync } from '../../services/api';
 
 // 날짜 포맷: yy년 mm월 dd일
+// DB에서 이미 한국시간(KST)으로 저장된 날짜이므로 시간대 변환 없이 문자열에서 직접 추출
 const formatDateKorean = (dateStr) => {
   if (!dateStr) return '-';
-  const date = new Date(dateStr);
-  const yy = String(date.getFullYear()).slice(2);
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const dd = String(date.getDate()).padStart(2, '0');
+  // ISO 문자열에서 날짜 부분만 추출 (예: "2026-01-21T15:30:00.000Z" -> "2026-01-21")
+  const dateOnly = String(dateStr).split('T')[0];
+  const [year, month, day] = dateOnly.split('-');
+  if (!year || !month || !day) return '-';
+  const yy = year.slice(2);
+  const mm = month.padStart(2, '0');
+  const dd = day.padStart(2, '0');
   return `${yy}년 ${mm}월 ${dd}일`;
+};
+
+// 날짜 + 시간 포맷: yy년 mm월 dd일 hh시
+// DB에서 이미 한국시간(KST)으로 저장된 날짜이므로 시간대 변환 없이 문자열에서 직접 추출
+const formatDateTimeKorean = (dateStr) => {
+  if (!dateStr) return '-';
+  const str = String(dateStr);
+  // ISO 문자열에서 날짜와 시간 추출 (예: "2026-01-21T15:30:00.000Z")
+  const dateOnly = str.split('T')[0];
+  const timePart = str.split('T')[1];
+  const [year, month, day] = dateOnly.split('-');
+  if (!year || !month || !day) return '-';
+  const yy = year.slice(2);
+  const mm = month.padStart(2, '0');
+  const dd = day.padStart(2, '0');
+
+  // 시간 추출 (HH:MM:SS.sss 형식에서 HH만)
+  let hour = '00';
+  if (timePart) {
+    hour = timePart.split(':')[0];
+  }
+
+  return `${yy}년 ${mm}월 ${dd}일 ${hour}시`;
 };
 
 function Layout({ children, currentPage, onPageChange, syncStatus, onSyncComplete, onLogout }) {
@@ -50,8 +77,8 @@ function Layout({ children, currentPage, onPageChange, syncStatus, onSyncComplet
     ? `${formatDateKorean(syncStatus.stats.dateRange.from)} ~ ${formatDateKorean(syncStatus.stats.dateRange.to)}`
     : '-';
 
-  // 마지막 동기화 시간 (한국 시간)
-  const lastSyncText = formatDateKorean(syncStatus?.lastSync?.completed_at);
+  // 마지막 동기화 시간 (한국 시간 - 시간까지 표시)
+  const lastSyncText = formatDateTimeKorean(syncStatus?.lastSync?.completed_at);
 
   return (
     <div className="h-screen bg-gray-100 flex flex-col overflow-hidden">

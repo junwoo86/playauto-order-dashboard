@@ -12,8 +12,8 @@ import { getAllOrders, getShops } from './playauto.js';
 // 스케줄러 상태
 let schedulerStatus = {
   enabled: true,
-  dailySync: {
-    schedule: '0 3 * * *',  // 매일 새벽 3시
+  intervalSync: {
+    schedule: '0 0,3,6,9,12,15,18,21 * * *',  // 3시간마다 (0시, 3시, 6시, ...)
     lastRun: null,
     nextRun: null,
     status: 'idle'
@@ -384,26 +384,52 @@ function getNextRunTime(cronExpression) {
   return next.toISOString();
 }
 
+// 다음 실행 시간 계산 (3시간 간격용)
+function getNextIntervalRunTime(cronExpression) {
+  const parts = cronExpression.split(' ');
+  const minute = parseInt(parts[0]);
+  const hours = parts[1].split(',').map(h => parseInt(h));  // [0, 3, 6, 9, 12, 15, 18, 21]
+
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
+
+  // 오늘 실행할 시간 중 현재 이후의 시간 찾기
+  let nextHour = hours.find(h => h > currentHour || (h === currentHour && minute > currentMinute));
+
+  const next = new Date(now);
+  if (nextHour !== undefined) {
+    // 오늘 실행
+    next.setHours(nextHour, minute, 0, 0);
+  } else {
+    // 내일 0시 실행
+    next.setDate(next.getDate() + 1);
+    next.setHours(hours[0], minute, 0, 0);
+  }
+
+  return next.toISOString();
+}
+
 // 스케줄러 초기화
 export function initScheduler() {
   console.log('\n========================================');
   console.log('Initializing scheduler...');
   console.log('========================================');
 
-  // 매일 새벽 3시 - 스마트 증분 동기화
-  cron.schedule(schedulerStatus.dailySync.schedule, async () => {
-    schedulerStatus.dailySync.status = 'running';
-    schedulerStatus.dailySync.lastRun = new Date().toISOString();
+  // 3시간마다 - 스마트 증분 동기화 (0시, 3시, 6시, 9시, 12시, 15시, 18시, 21시)
+  cron.schedule(schedulerStatus.intervalSync.schedule, async () => {
+    schedulerStatus.intervalSync.status = 'running';
+    schedulerStatus.intervalSync.lastRun = new Date().toISOString();
 
     try {
       await smartIncrementalSync();
-      schedulerStatus.dailySync.status = 'idle';
+      schedulerStatus.intervalSync.status = 'idle';
     } catch (error) {
-      console.error('Scheduled daily sync failed:', error);
-      schedulerStatus.dailySync.status = 'error';
+      console.error('Scheduled interval sync failed:', error);
+      schedulerStatus.intervalSync.status = 'error';
     }
 
-    schedulerStatus.dailySync.nextRun = getNextRunTime(schedulerStatus.dailySync.schedule);
+    schedulerStatus.intervalSync.nextRun = getNextIntervalRunTime(schedulerStatus.intervalSync.schedule);
   }, {
     timezone: 'Asia/Seoul'
   });
@@ -427,10 +453,10 @@ export function initScheduler() {
   });
 
   // 초기 다음 실행 시간 설정
-  schedulerStatus.dailySync.nextRun = getNextRunTime(schedulerStatus.dailySync.schedule);
+  schedulerStatus.intervalSync.nextRun = getNextIntervalRunTime(schedulerStatus.intervalSync.schedule);
   schedulerStatus.weeklyValidation.nextRun = getNextRunTime(schedulerStatus.weeklyValidation.schedule);
 
-  console.log(`Daily sync scheduled: ${schedulerStatus.dailySync.schedule} (next: ${schedulerStatus.dailySync.nextRun})`);
+  console.log(`Interval sync scheduled: ${schedulerStatus.intervalSync.schedule} (next: ${schedulerStatus.intervalSync.nextRun})`);
   console.log(`Weekly validation scheduled: ${schedulerStatus.weeklyValidation.schedule} (next: ${schedulerStatus.weeklyValidation.nextRun})`);
   console.log('========================================\n');
 

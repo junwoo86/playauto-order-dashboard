@@ -52,7 +52,7 @@ function SkuTrendChart({ dateRange, excludeInternal }) {
     if (!trendData?.data) return [];
     return trendData.data.map(item => ({
       date: item.order_date,
-      dateLabel: format(new Date(item.order_date), 'MM/dd'),
+      dateLabel: item.order_date ? `${item.order_date.split('-')[1]}/${item.order_date.split('-')[2]}` : '',
       판매량: parseInt(item.total_quantity) || 0,
       주문수: parseInt(item.order_count) || 0
     }));
