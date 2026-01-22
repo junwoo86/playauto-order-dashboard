@@ -26,15 +26,15 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-800 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 w-full max-w-md p-8">
         {/* 로고 영역 */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
             <span className="text-3xl">📊</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">플레이오토 주문 분석</h1>
-          <p className="text-gray-500 mt-2">바이오컴 매출 분석 대시보드</p>
+          <h1 className="text-2xl font-bold text-gray-800">바이오컴 주문 분석</h1>
+          <p className="text-gray-500 mt-2">매출 분석 대시보드</p>
         </div>
 
         {/* 로그인 폼 */}
@@ -104,7 +104,7 @@ function Login({ onLogin }) {
         {/* 푸터 */}
         <div className="mt-8 text-center">
           <p className="text-xs text-gray-400">
-            Powered by PlayAuto
+            Powered by BIOCOM
           </p>
         </div>
       </div>

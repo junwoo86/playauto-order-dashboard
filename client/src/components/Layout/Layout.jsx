@@ -64,10 +64,10 @@ function Layout({ children, currentPage, onPageChange, syncStatus, onSyncComplet
               <span className="text-2xl">📊</span>
               <div>
                 <h1 className="text-lg font-bold text-gray-900">
-                  플레이오토 주문 분석
+                  바이오컴 주문 분석
                 </h1>
                 <p className="text-xs text-gray-500">
-                  바이오컴 매출 분석 대시보드
+                  매출 분석 대시보드
                 </p>
               </div>
             </div>
@@ -149,7 +149,7 @@ function Layout({ children, currentPage, onPageChange, syncStatus, onSyncComplet
           {/* 푸터 - 사이드바 하단 */}
           <div className="absolute bottom-0 left-0 w-56 p-3 border-t bg-white">
             <p className="text-center text-xs text-gray-400">
-              Powered by PlayAuto
+              Powered by BIOCOM
             </p>
           </div>
         </aside>
