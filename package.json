@@ -1,0 +1,10 @@
+{
+  "name": "playauto-dashboard-test",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "npx playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  }
+}

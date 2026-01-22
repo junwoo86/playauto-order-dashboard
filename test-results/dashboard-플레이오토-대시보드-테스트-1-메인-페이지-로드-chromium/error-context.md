@@ -1,0 +1,49 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e8]: 📊
+        - generic [ref=e9]:
+          - heading "플레이오토 주문 분석" [level=1] [ref=e10]
+          - paragraph [ref=e11]: 스토어별/상품별 매출 분석 및 판매 예측
+      - generic [ref=e12]: 바이오컴
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e17]:
+          - heading "🔄 데이터 동기화" [level=3] [ref=e18]:
+            - generic [ref=e19]: 🔄
+            - text: 데이터 동기화
+          - paragraph [ref=e21]:
+            - text: "총 주문:"
+            - generic [ref=e22]: 0건
+          - generic [ref=e23]:
+            - button "최근 7일 동기화" [ref=e24] [cursor=pointer]
+            - button "전체" [ref=e25] [cursor=pointer]
+        - generic [ref=e28]:
+          - generic [ref=e29]:
+            - button "최근 7일" [ref=e30] [cursor=pointer]
+            - button "최근 30일" [ref=e31] [cursor=pointer]
+            - button "이번 달" [ref=e32] [cursor=pointer]
+            - button "지난 달" [ref=e33] [cursor=pointer]
+            - button "최근 3개월" [ref=e34] [cursor=pointer]
+            - button "최근 1년" [ref=e35] [cursor=pointer]
+          - generic [ref=e36]:
+            - textbox [ref=e37]: 2025-11-01
+            - generic [ref=e38]: ~
+            - textbox [ref=e39]: 2026-01-31
+          - combobox [ref=e40]:
+            - option "전체 스토어" [selected]
+          - button "📥 엑셀 다운로드" [ref=e41] [cursor=pointer]:
+            - generic [ref=e42]: 📥
+            - text: 엑셀 다운로드
+      - generic [ref=e43]:
+        - generic [ref=e44]: 📊
+        - heading "데이터가 없습니다" [level=2] [ref=e45]
+        - paragraph [ref=e46]: 상단의 "데이터 동기화" 버튼을 클릭하여 플레이오토에서 주문 데이터를 가져오세요.
+  - contentinfo [ref=e47]:
+    - paragraph [ref=e49]: Powered by PlayAuto Open API
+```
