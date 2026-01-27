@@ -50,12 +50,17 @@ function SkuTrendChart({ dateRange, excludeInternal }) {
   // 차트 데이터 가공
   const chartData = useMemo(() => {
     if (!trendData?.data) return [];
-    return trendData.data.map(item => ({
-      date: item.order_date,
-      dateLabel: item.order_date ? `${item.order_date.split('-')[1]}/${item.order_date.split('-')[2]}` : '',
-      판매량: parseInt(item.total_quantity) || 0,
-      주문수: parseInt(item.order_count) || 0
-    }));
+    return trendData.data.map(item => {
+      // 날짜 부분만 추출 (시간 제외): "2026-01-21T15:30:00" -> "2026-01-21"
+      const dateOnly = item.order_date ? String(item.order_date).split('T')[0] : '';
+      const [, month, day] = dateOnly.split('-');
+      return {
+        date: item.order_date,
+        dateLabel: month && day ? `${month}/${day}` : '',
+        판매량: parseInt(item.total_quantity) || 0,
+        주문수: parseInt(item.order_count) || 0
+      };
+    });
   }, [trendData]);
 
   // 요약 통계
