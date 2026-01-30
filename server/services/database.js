@@ -3,7 +3,7 @@ const { Pool } = pg;
 
 // PostgreSQL 연결 설정 (연결 안정성 강화)
 const pool = new Pool({
-  host: process.env.DB_HOST || '15.164.112.237',
+  host: process.env.DB_HOST || '34.70.164.113',
   port: process.env.DB_PORT || 5432,
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'bico0211',
